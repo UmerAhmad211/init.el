@@ -5,7 +5,7 @@
 (setq package-selected-packages
       '(lsp-mode yasnippet lsp-treemacs helm-lsp helm-xref dune
         projectile hydra flycheck company avy which-key
-        zig-mode tuareg ocaml-eglot ocamlformat merlin clang-format disable-mouse))
+        zig-mode tuareg ocaml-eglot ocamlformat merlin clang-format disable-mouse nano-theme))
 
 (setq custom-enabled-themes nil)
 (load-theme 'nano-light t)
@@ -63,6 +63,7 @@
   :ensure t
   :hook (tuareg-mode . eglot-ensure))
 
+
 (use-package ocamlformat
   :custom (ocamlformat-enable 'enable-outside-detected-project)
   :hook (before-save . ocamlformat-before-save)
@@ -85,6 +86,23 @@
 (setq make-backup-files nil)
 (add-to-list 'load-path "~/.config/emacs/lisp/")
 (require 'disaster)
-(add-hook 'c-mode-hook (lambda () (local-set-key (kbd "C-c d") #'disaster)))
-(add-hook 'c++-mode-hook (lambda () (local-set-key (kbd "C-c d") #'disaster)))
+(defun disaster-x86 ()
+  (interactive)
+  (let ((disaster-objdump "objdump -d -S -C"))
+    (disaster)))
+
+(defun disaster-arm ()
+  (interactive)
+  (let ((disaster-objdump "arm-none-eabi-objdump -d -S -C"))
+    (disaster)))
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c d") #'disaster-x86)
+            (local-set-key (kbd "C-c e") #'disaster-arm)))
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c d") #'disaster-x86)
+            (local-set-key (kbd "C-c e") #'disaster-arm)))
 (global-disable-mouse-mode)
