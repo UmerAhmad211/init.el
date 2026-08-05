@@ -1,0 +1,6 @@
+*
+!lisp/
+!init.el
+!.gitmodules
+!.gitignore
+!README
